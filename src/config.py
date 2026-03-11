@@ -1,0 +1,1 @@
+# Load .env, expose paths (BRONZE_DIR, SILVER_DIR, GOLD_DIR)
