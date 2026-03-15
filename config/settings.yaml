@@ -1,1 +1,10 @@
-# Parameters: Mediapipe Hands confidence, seed, split ratios
+mediapipe:
+  min_detection_confidence: 0.5
+  max_num_hands: 1
+
+general:
+  seed: 42
+  split_ratios:
+    train: 0.7
+    val: 0.15
+    test: 0.15
