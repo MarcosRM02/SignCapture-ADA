@@ -8,3 +8,7 @@ general:
     train: 0.7
     val: 0.15
     test: 0.15
+
+dataset:
+  repo: "debashishsau/aslamerican-sign-language-aplhabet-dataset"
+  num_instances_per_sign: 6800

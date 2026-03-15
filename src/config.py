@@ -88,6 +88,25 @@ class GeneralConfig:
             raise ValueError("Train, validation, and test ratios must sum to 1.0")
 
 @dataclass
+class DatasetConfig:
+    """  
+    Configuration class for dataset settings in the SignCapture project.
+
+    Attributes:
+        repo (str): The Kaggle repository identifier for the dataset.
+        num_instances_per_sign (int): The number of instances to keep per sign.
+    """
+    repo: str
+    num_instances_per_sign: int
+
+    def __init__(self):
+        _settings_path = Path(__file__).resolve().parents[1] / "config" / "settings.yaml"
+        settings = load_yaml(_settings_path)
+
+        self.repo = settings['dataset']['repo']
+        self.num_instances_per_sign = settings['dataset']['num_instances_per_sign']
+
+@dataclass
 class Config:
     """  
     Main configuration class that aggregates all other configuration classes for the SignCapture project.
@@ -96,14 +115,17 @@ class Config:
         paths (PathsConfig): An instance of PathsConfig containing file path configurations.
         mediapipe (MediaPipeConfig): An instance of MediaPipeConfig containing MediaPipe settings.
         general (GeneralConfig): An instance of GeneralConfig containing general settings.
+        dataset (DatasetConfig): An instance of DatasetConfig containing dataset settings.
     """
     paths: PathsConfig
     mediapipe: MediaPipeConfig
     general: GeneralConfig
+    dataset: DatasetConfig
 
     def __init__(self):
         self.paths = PathsConfig()
         self.mediapipe = MediaPipeConfig()
         self.general = GeneralConfig()
+        self.dataset = DatasetConfig()
 
 config = Config()
