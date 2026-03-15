@@ -79,6 +79,16 @@ class GeneralConfig:
         self.val_ratio = settings['general']['split_ratios']['val']
         self.test_ratio = settings['general']['split_ratios']['test']
 
+        if not self._validate_ratios():
+            self.train_ratio = 0.7
+            self.val_ratio = 0.15
+            self.test_ratio = 0.15
+
+    def _validate_ratios(self):
+        total = self.train_ratio + self.val_ratio + self.test_ratio
+        if not abs(total - 1.0) < 1e-6:
+            raise ValueError("Train, validation, and test ratios must sum to 1.0")
+
 @dataclass
 class Config:
     """  
