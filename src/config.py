@@ -1,8 +1,8 @@
 import os
-import yaml
 from pathlib import Path
 from dotenv import load_dotenv
 from dataclasses import dataclass
+from src.utils.io import load_yaml
 
 @dataclass
 class PathsConfig:
@@ -47,8 +47,7 @@ class MediaPipeConfig:
 
     def __init__(self):
         _settings_path = Path(__file__).resolve().parents[1] / "config" / "settings.yaml"
-        with open(_settings_path, 'r') as f:
-            settings = yaml.safe_load(f)
+        settings = load_yaml(_settings_path)
 
         self.max_num_hands = settings['mediapipe']['max_num_hands']
         self.min_detection_confidence = settings['mediapipe']['min_detection_confidence']
@@ -71,9 +70,8 @@ class GeneralConfig:
 
     def __init__(self):
         _settings_path = Path(__file__).resolve().parents[1] / "config" / "settings.yaml"
-        with open(_settings_path, 'r') as f:
-            settings = yaml.safe_load(f)
-
+        settings = load_yaml(_settings_path)
+    
         self.seed = settings['general']['seed']
         self.train_ratio = settings['general']['split_ratios']['train']
         self.val_ratio = settings['general']['split_ratios']['val']
