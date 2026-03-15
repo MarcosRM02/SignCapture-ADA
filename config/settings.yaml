@@ -13,3 +13,9 @@ general:
 dataset:
   repo: "debashishsau/aslamerican-sign-language-aplhabet-dataset"
   num_instances_per_sign: 6800
+
+augmentation:
+  rotation_range: 15
+  zoom_range: 0.1
+  horizontal_flip: true
+  num_augmentations: 5

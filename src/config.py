@@ -109,6 +109,31 @@ class DatasetConfig:
         self.num_instances_per_sign = settings['dataset']['num_instances_per_sign']
 
 @dataclass
+class AugmentationConfig:
+    """  
+    Configuration class for data augmentation settings in the SignCapture project.
+
+    Attributes:
+        rotation_range (int): The range of degrees for random rotations.
+        zoom_range (float): The range for random zoom.
+        horizontal_flip (bool): Whether to randomly flip images horizontally.
+        num_augmentations (int): The number of augmented copies to generate per sample.
+    """
+    rotation_range: int
+    zoom_range: float
+    horizontal_flip: bool
+    num_augmentations: int
+
+    def __init__(self):
+        _settings_path = Path(__file__).resolve().parents[1] / "config" / "settings.yaml"
+        settings = load_yaml(_settings_path)
+
+        self.rotation_range = settings['augmentation']['rotation_range']
+        self.zoom_range = settings['augmentation']['zoom_range']
+        self.horizontal_flip = settings['augmentation']['horizontal_flip']
+        self.num_augmentations = settings['augmentation']['num_augmentations']
+
+@dataclass
 class Config:
     """  
     Main configuration class that aggregates all other configuration classes for the SignCapture project.
@@ -118,16 +143,19 @@ class Config:
         mediapipe (MediaPipeConfig): An instance of MediaPipeConfig containing MediaPipe settings.
         general (GeneralConfig): An instance of GeneralConfig containing general settings.
         dataset (DatasetConfig): An instance of DatasetConfig containing dataset settings.
+        augmentation (AugmentationConfig): An instance of AugmentationConfig containing augmentation settings.
     """
     paths: PathsConfig
     mediapipe: MediaPipeConfig
     general: GeneralConfig
     dataset: DatasetConfig
+    augmentation: AugmentationConfig
 
     def __init__(self):
         self.paths = PathsConfig()
         self.mediapipe = MediaPipeConfig()
         self.general = GeneralConfig()
         self.dataset = DatasetConfig()
+        self.augmentation = AugmentationConfig()
 
 config = Config()
