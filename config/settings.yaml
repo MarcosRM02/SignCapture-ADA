@@ -1,6 +1,7 @@
 mediapipe:
   min_detection_confidence: 0.5
   max_num_hands: 1
+  model_path: "../models/hand_landmarker.task"
 
 general:
   seed: 42

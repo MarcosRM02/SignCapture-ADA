@@ -2,7 +2,7 @@
 PYTHON = python3
 PIP = pip
 
-.PHONY: help install lint bronze clean
+.PHONY: help install test lint bronze silver clean
 
 # Meta-comando por defecto (se ejecuta al escribir solo 'make')
 help:
@@ -12,8 +12,6 @@ help:
 	@echo "  make lint     - Revisa el estilo de código con ruff"
 	@echo "  make bronze   - Ejecuta la pipeline Bronze"
 	@echo "  make silver   - Ejecuta la pipeline Silver"
-	@echo "  make gold     - Ejecuta la pipeline Gold"
-	@echo "  make all      - Ejecuta todo el flujo de datos"
 	@echo "  make clean    - Elimina archivos temporales de Python"
 
 # Comandos de configuración
@@ -21,12 +19,18 @@ install:
 	$(PIP) install -r requirements.txt
 
 # Comandos de Calidad
+test:
+	pytest tests/ -v
+
 lint:
 	ruff check src/
 
 # Pipelines de Datos
 bronze:
 	$(PYTHON) -m pipelines.run_bronze
+
+silver:
+	$(PYTHON) -m pipelines.run_silver
 
 # Limpieza
 clean:

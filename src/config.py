@@ -42,8 +42,9 @@ class MediaPipeConfig:
         max_num_hands (int): The maximum number of hands to detect.
         min_detection_confidence (float): The minimum confidence value for hand detection.
     """
-    max_num_hands: int
-    min_detection_confidence: float
+    max_num_hands: int = 1
+    min_detection_confidence: float = 0.5
+    model_path: str = "../models/hand_landmarker.task"
 
     def __init__(self):
         _settings_path = Path(__file__).resolve().parents[1] / "config" / "settings.yaml"
@@ -51,6 +52,7 @@ class MediaPipeConfig:
 
         self.max_num_hands = settings['mediapipe']['max_num_hands']
         self.min_detection_confidence = settings['mediapipe']['min_detection_confidence']
+        self.model_path = settings['mediapipe']['model_path']
 
 @dataclass
 class GeneralConfig:
@@ -63,10 +65,10 @@ class GeneralConfig:
         val_ratio (float): The ratio of the dataset to be used for validation.
         test_ratio (float): The ratio of the dataset to be used
     """
-    seed: int
-    train_ratio: float
-    val_ratio: float
-    test_ratio: float
+    seed: int = 42
+    train_ratio: float = 0.7
+    val_ratio: float = 0.15
+    test_ratio: float = 0.15
 
     def __init__(self):
         _settings_path = Path(__file__).resolve().parents[1] / "config" / "settings.yaml"

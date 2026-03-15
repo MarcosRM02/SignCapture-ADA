@@ -1,6 +1,6 @@
 dotenv==0.9.9
 PyYAML==6.0.3
 pyarrow==23.0.1
-mediapipe==0.10.21
-pandas
-opencv-python
+mediapipe==0.10.30
+pandas==3.0.1
+opencv-python==4.13.0.92
