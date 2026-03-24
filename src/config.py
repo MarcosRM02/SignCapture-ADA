@@ -114,11 +114,13 @@ class AugmentationConfig:
     Configuration class for data augmentation settings in the SignCapture project.
 
     Attributes:
+        num_images_per_sign (int): Number of images per sign to augment.
         rotation_range (int): The range of degrees for random rotations.
         zoom_range (float): The range for random zoom.
         horizontal_flip (bool): Whether to randomly flip images horizontally.
         num_augmentations (int): The number of augmented copies to generate per sample.
     """
+    num_images_per_sign: int
     rotation_range: int
     zoom_range: float
     horizontal_flip: bool
@@ -128,6 +130,7 @@ class AugmentationConfig:
         _settings_path = Path(__file__).resolve().parents[1] / "config" / "settings.yaml"
         settings = load_yaml(_settings_path)
 
+        self.num_images_per_sign = settings['augmentation']['num_images_per_sign']
         self.rotation_range = settings['augmentation']['rotation_range']
         self.zoom_range = settings['augmentation']['zoom_range']
         self.horizontal_flip = settings['augmentation']['horizontal_flip']

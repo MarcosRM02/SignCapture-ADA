@@ -1,5 +1,5 @@
 mediapipe:
-  min_detection_confidence: 0.5
+  min_detection_confidence: 0.3  # Reducido de 0.5 para mejorar cobertura de detección
   max_num_hands: 1
   model_path: "../models/hand_landmarker.task"
 
@@ -15,7 +15,8 @@ dataset:
   num_instances_per_sign: 6800
 
 augmentation:
+  num_images_per_sign: 3000
   rotation_range: 15
   zoom_range: 0.1
   horizontal_flip: true
-  num_augmentations: 5
+  num_augmentations: 10
