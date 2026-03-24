@@ -10,7 +10,7 @@ def run_gold_pipeline():
     Run the gold pipeline to normalize and augment hand landmarks. 
     """
     augmented_df = augment_landmarks(config.paths.silver_dir)
-    normalized_df = normalize_landmarks(augmented_df, config.paths.gold_dir)
+    normalized_df = normalize_landmarks(augmented_df)
     train_df, val_df, test_df = split_landmarks(normalized_df)
     train_df.to_csv(config.paths.gold_dir / 'train.csv', index=False)
     val_df.to_csv(config.paths.gold_dir / 'val.csv', index=False)

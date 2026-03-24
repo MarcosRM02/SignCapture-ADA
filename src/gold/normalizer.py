@@ -4,14 +4,13 @@ from src.utils.landmark import LandmarkPoint
 import pandas as pd
 from pathlib import Path
 
-def normalize_landmarks(input_df: pd.DataFrame, gold_dir: Path) -> pd.DataFrame:
+def normalize_landmarks(input_df: pd.DataFrame) -> pd.DataFrame:
     """ 
     Normalize hand landmarks in a [-1, 1] range for each image in the
     silver directory and save the normalized landmarks to a DataFrame.
 
     Args:
         input_df (pd.DataFrame): The DataFrame containing the extracted landmarks.
-        gold_dir (Path): The directory where the normalized landmarks will be saved.
 
     Returns:
         pd.DataFrame: A DataFrame containing the normalized hand landmarks.
