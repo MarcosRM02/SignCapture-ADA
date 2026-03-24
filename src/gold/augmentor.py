@@ -3,6 +3,7 @@
 import math
 import random
 import pandas as pd
+import numpy as np
 from pathlib import Path
 from src.config import config
 from src.config import AugmentationConfig
@@ -12,6 +13,7 @@ from src.utils.landmark import LandmarkPoint
 def augment_landmarks(silver_dir: Path) -> pd.DataFrame:
     """
     Apply data augmentation to hand landmarks including rotation, zoom, and horizontal flip.
+    Only uses num_images_per_sign random samples per letter (discards the rest).
     
     Args:
         silver_dir (Path): The directory containing the extracted landmarks.
@@ -20,19 +22,45 @@ def augment_landmarks(silver_dir: Path) -> pd.DataFrame:
         pd.DataFrame: A DataFrame containing both original and augmented hand landmarks.
     """
     df = pd.read_csv(silver_dir / 'hand_landmarks.csv')
+    
+    # Set random seed for reproducibility
+    random.seed(config.general.seed)
+    np.random.seed(config.general.seed)
+    
     augmented_data = []
     
-    # Add original data
-    for _, row in df.iterrows():
-        augmented_data.append(row.to_dict())
-    
-    # Generate augmented copies
-    for _, row in df.iterrows():
-        for _ in range(config.augmentation.num_augmentations):
-            augmented_row = _apply_augmentations(row, config.augmentation)
-            augmented_data.append(augmented_row)
+    # Process each letter separately
+    for letter in df['letter'].unique():
+        letter_df = df[df['letter'] == letter]
+        
+        # Select only num_images_per_sign random rows (or all if less than that)
+        num_to_use = min(config.augmentation.num_images_per_sign, len(letter_df))
+        selected_rows = letter_df.sample(n=num_to_use, random_state=config.general.seed)
+        
+        # Add selected original rows
+        for _, row in selected_rows.iterrows():
+            augmented_data.append(row.to_dict())
+        
+        # Generate augmented copies for selected rows
+        for _, row in selected_rows.iterrows():
+            for _ in range(config.augmentation.num_augmentations):
+                augmented_row = _apply_augmentations(row, config.augmentation)
+                augmented_data.append(augmented_row)
     
     augmented_df = pd.DataFrame(augmented_data)
+    
+    # Print summary
+    print(f"Augmentation summary:")
+    for letter in df['letter'].unique():
+        available = len(df[df['letter'] == letter])
+        used = min(config.augmentation.num_images_per_sign, available)
+        discarded = available - used
+        augmented = used * config.augmentation.num_augmentations
+        total = used + augmented
+        print(f"  Letter {letter}: {available} available → {used} selected, {discarded} discarded → {augmented} augmented → {total} total")
+    
+    print(f"  Final dataset size: {len(augmented_df)}")
+    
     return augmented_df
 
 
@@ -72,8 +100,11 @@ def _apply_augmentations(row: pd.Series, config: AugmentationConfig) -> dict:
     if config.horizontal_flip and random.random() > 0.5:
         landmarks = _flip_landmarks_horizontal(landmarks, center_x)
     
-    # Build augmented row
-    augmented_row = {'image_path': row['image_path']}
+    # Build augmented row (preserve letter field)
+    augmented_row = {
+        'image_path': row['image_path'],
+        'letter': row['letter']
+    }
     for i, landmark in enumerate(landmarks):
         augmented_row[f'landmark{i}_x'] = landmark.x
         augmented_row[f'landmark{i}_y'] = landmark.y
