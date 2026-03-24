@@ -16,8 +16,11 @@ class LandmarkDetector:
     """
     def __init__(self):
         base_options = python.BaseOptions(model_asset_path=config.mediapipe.model_path)
-        options = vision.HandLandmarkerOptions(base_options=base_options, 
-                                               num_hands=config.mediapipe.max_num_hands)
+        options = vision.HandLandmarkerOptions(
+            base_options=base_options, 
+            num_hands=config.mediapipe.max_num_hands,
+            min_hand_detection_confidence=config.mediapipe.min_detection_confidence
+        )
         self.mp_hands = vision.HandLandmarker.create_from_options(options)
 
     def detect_landmarks(self, image)->List[LandmarkPoint]:
@@ -29,6 +32,9 @@ class LandmarkDetector:
         Returns:
             List[LandmarkPoint]: A list of detected hand landmarks as LandmarkPoint instances.
         """
+        if image is None or image.size == 0:
+            return []
+        
         # Convert the image to the format expected by MediaPipe
         image = mp.Image(image_format=mp.ImageFormat.SRGB, data=image)
 
