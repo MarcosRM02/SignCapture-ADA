@@ -6,17 +6,17 @@ mediapipe:
 general:
   seed: 42
   split_ratios:
-    train: 0.7
-    val: 0.15
-    test: 0.15
+    train: 0.6
+    val: 0.2
+    test: 0.2
 
 dataset:
   repo: "debashishsau/aslamerican-sign-language-aplhabet-dataset"
   num_instances_per_sign: 6800
 
 augmentation:
-  num_images_per_sign: 3000
-  rotation_range: 15
+  num_images_per_sign: 2200
+  rotation_range: 45
   zoom_range: 0.1
   horizontal_flip: true
   num_augmentations: 10
