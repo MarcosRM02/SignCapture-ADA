@@ -3,6 +3,7 @@
 import pandas as pd
 from src.config import config
 from src.gold.normalizer import normalize_landmarks
+from src.gold.feature_engineering import add_angle_features
 from src.gold.augmentor import augment_landmarks, ensure_original_id
 from src.gold.splitter import split_landmarks
 
@@ -16,9 +17,9 @@ def run_gold_pipeline():
     train_raw_df, val_raw_df, test_raw_df = split_landmarks(silver_df, drop_image_path=False)
 
     train_augmented_df = augment_landmarks(input_df=train_raw_df)
-    train_df = normalize_landmarks(train_augmented_df)
-    val_df = normalize_landmarks(val_raw_df)
-    test_df = normalize_landmarks(test_raw_df)
+    train_df = add_angle_features(normalize_landmarks(train_augmented_df))
+    val_df = add_angle_features(normalize_landmarks(val_raw_df))
+    test_df = add_angle_features(normalize_landmarks(test_raw_df))
 
     if 'image_path' in train_df.columns:
         train_df = train_df.drop(columns=['image_path'])
