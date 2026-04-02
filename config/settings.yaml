@@ -1,1 +1,22 @@
-# Parameters: Mediapipe Hands confidence, seed, split ratios
+mediapipe:
+  min_detection_confidence: 0.3  # Reducido de 0.5 para mejorar cobertura de detección
+  max_num_hands: 1
+  model_path: "../models/hand_landmarker.task"
+
+general:
+  seed: 42
+  split_ratios:
+    train: 0.6
+    val: 0.2
+    test: 0.2
+
+dataset:
+  repo: "debashishsau/aslamerican-sign-language-aplhabet-dataset"
+  num_instances_per_sign: 6800
+
+augmentation:
+  num_images_per_sign: 2200
+  rotation_range: 45
+  zoom_range: 0.1
+  horizontal_flip: true
+  num_augmentations: 10
