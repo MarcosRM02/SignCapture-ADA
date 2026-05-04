@@ -5,3 +5,4 @@ mediapipe==0.10.30
 pandas==3.0.1
 opencv-python==4.13.0.92
 scikit-learn==1.8.0
+kaggle>=1.6.0

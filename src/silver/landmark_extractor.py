@@ -29,7 +29,7 @@ def extract_landmarks(bronze_dir: Path, silver_dir: Path, detector: LandmarkDete
             image = cv2.imread(str(image_path))
             landmarks = detector.detect_landmarks(image)
             if landmarks:
-                row = {'image_path': str(image_path)}
+                row = {'image_path': str(image_path), 'letter': subdir.name}
                 for i, landmark in enumerate(landmarks):
                     row[f'landmark{i}_x'] = landmark.x
                     row[f'landmark{i}_y'] = landmark.y
@@ -37,5 +37,6 @@ def extract_landmarks(bronze_dir: Path, silver_dir: Path, detector: LandmarkDete
                 data.append(row)
 
     df = pd.DataFrame(data)
+    silver_dir.mkdir(parents=True, exist_ok=True)
     df.to_csv(silver_dir / 'hand_landmarks.csv', index=False)
     return df

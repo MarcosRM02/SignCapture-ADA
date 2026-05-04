@@ -28,6 +28,7 @@ def run_gold_pipeline():
     if 'image_path' in test_df.columns:
         test_df = test_df.drop(columns=['image_path'])
 
+    config.paths.gold_dir.mkdir(parents=True, exist_ok=True)
     train_df.to_csv(config.paths.gold_dir / 'train.csv', index=False)
     val_df.to_csv(config.paths.gold_dir / 'val.csv', index=False)
     test_df.to_csv(config.paths.gold_dir / 'test.csv', index=False)
